@@ -5,6 +5,9 @@ class SpriteSheet(pygame.sprite.Sprite):
     def __init__(self, spritesheet, *groups, **kwargs):
         super().__init__(*groups)
 
+        self.set_image(spritesheet, **kwargs)
+    
+    def set_image(self, spritesheet, **kwargs):
         num_sprites = kwargs.get("num_sprites", 1)
         self.framerate = kwargs.get("framerate", 30)
 
@@ -22,8 +25,6 @@ class SpriteSheet(pygame.sprite.Sprite):
         self.image = self.frames[0]
         self.counter = 0
         self.findex = 0
-
-        print(self.frames)
 
     def update(self):
         self.counter += 1
