@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+from pygame.transform import scale2x
 
 from modules.utils import *
 from modules.state import State
@@ -7,18 +8,22 @@ from modules.objects import Player
 
 pygame.init()
 
-screen = pygame.display.set_mode((512, 512))
+toscale = pygame.Surface((720, 432))
+screen = pygame.display.set_mode((1440, 864))
 pygame.display.set_caption("pee n poo")
 pygame.mouse.set_visible(1)
 
-background = pygame.Surface(screen.get_size())
+background = pygame.Surface(toscale.get_size())
 background = background.convert()
+
+
 
 clock = pygame.time.Clock()
 
 playerGroup = pygame.sprite.RenderPlain()
 
-testPlayer = Player(playerGroup)
+testPlayer = Player("player_idle", playerGroup, num_sprites=2)
+testPlayer.rect = (background.get_width()/2, background.get_height()/2)
 
 running = True
 
@@ -33,10 +38,13 @@ while running:
         if event.type == pygame.KEYDOWN:
             keyInput(event, gameState)
 
-    background.fill((0,0,0))
+    background.fill((255,0,0))
 
+    playerGroup.update()
     playerGroup.draw(background)
-
-    screen.blit(background, (0,0))
     
+
+    toscale.blit(background, (0,0))
+    pygame.transform.scale(toscale, (screen.get_size()), screen)
+
     pygame.display.update()

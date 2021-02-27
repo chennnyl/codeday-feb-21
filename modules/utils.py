@@ -3,11 +3,11 @@ import os
 
 from modules.state import State
 
-from pygame.constants import K_AT, K_a
+from pygame.constants import K_AT, K_a, RLEACCEL
 
 # loads an image
-def load_image(name):
-    filepath = os.path.join("assets", "img", name)
+def load_image(name, colorkey=None):
+    filepath = os.path.join("assets", "img", name + ".png")
     try:
         image = pygame.image.load(filepath)
     except pygame.error as error:
@@ -15,6 +15,10 @@ def load_image(name):
         print("Can't load image you dumbass you bumbling buffoon you cretin you fucking idiot try again you massive flaming dumbfuck:", name)
         raise SystemExit(error)
     image = image.convert()
+    if colorkey is not None:
+        if colorkey == -1:
+            colorkey = image.get_at((0,0))
+        image.set_colorkey(colorkey, RLEACCEL)
 
     return image, image.get_rect()
 
