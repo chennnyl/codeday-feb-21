@@ -1,7 +1,7 @@
 import pygame
 import os
 
-from state import State
+from modules.state import State
 
 from pygame.constants import K_AT, K_a
 

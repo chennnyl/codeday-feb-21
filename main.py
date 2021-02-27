@@ -1,9 +1,9 @@
 import pygame
 from pygame.locals import *
 
-from utils import *
-from state import State
-from objects import Player
+from modules.utils import *
+from modules.state import State
+from modules.objects import Player
 
 pygame.init()
 
