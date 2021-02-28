@@ -22,7 +22,7 @@ background = background.convert()
 
 clock = pygame.time.Clock()
 
-world = PhysicsWorld(debug=False, display_surface=background)
+world = PhysicsWorld(debug=True, display_surface=background)
 otherObjects = Group()
 
 ground1 = StaticObject("ground", colorkey=None)
