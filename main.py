@@ -6,7 +6,7 @@ from pygame.sprite import Sprite, Group
 
 from modules.utils import *
 from modules.state import State
-from modules.objects import DefaultPlayer, PhysicsWorld, StaticObject, SpriteSheet
+from modules.objects import DefaultPlayer, PhysicsObject, PhysicsWorld, StaticObject, SpriteSheet
 
 pygame.init()
 
@@ -27,11 +27,11 @@ otherObjects = Group()
 
 ground1 = StaticObject("ground", colorkey=None)
 ground2 = StaticObject("ground", colorkey=None)
-ground1.rect = (0, toscale.get_height() - ground1.image.get_height(), ground1.image.get_width(), ground1.image.get_height())
-ground2.rect = (ground1.image.get_width(), toscale.get_height() - ground1.image.get_height(), ground2.image.get_width(), ground2.image.get_height())
+ground1.moveTo(0, toscale.get_height() - ground1.image.get_height())
+ground2.moveTo(ground1.image.get_width(), toscale.get_height() - ground1.image.get_height())
 
-spikes = SpriteSheet("spikes", otherObjects, num_sprites=17, framerate=10, start_dead=True)
-spikes.rect = pygame.Rect(0,toscale.get_height()-ground1.image.get_height()-spikes.image.get_height(), spikes.image.get_width(), spikes.image.get_height())
+spikes = StaticObject("spikes", num_sprites=17, framerate=10, start_dead=True, is_trigger=True)
+spikes.moveTo(0,toscale.get_height()-ground1.image.get_height()-spikes.image.get_height())
 
 grasses = [
     SpriteSheet("grass", otherObjects, num_sprites=9, framerate=10, start_frame=random.randint(0, 8)) for _ in range(90) 
@@ -41,9 +41,9 @@ for i,grass in enumerate(grasses):
 
 testPlayer = DefaultPlayer(otherObjects)
 
-world.add(testPlayer, ground1, ground2)
+world.add(testPlayer, ground1, ground2, spikes)
 
-testPlayer.rect = (background.get_width()/2, background.get_height()/2)
+testPlayer.moveTo(background.get_width()/2, background.get_height()/2)
 
 running = True
 
