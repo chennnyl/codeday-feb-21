@@ -12,7 +12,7 @@ def load_image(name, colorkey=None):
         image = pygame.image.load(filepath)
     except pygame.error as error:
         # if this happens you are dumbass you are bumbling buffoon you are cretin you are fucking idioot and you need to try again because you are massive flaming dumbfuck
-        print("Can't load image you dumbass you bumbling buffoon you cretin you fucking idiot try again you massive flaming dumbfuck:", name)
+        print("Couldn't load image:", name)
         raise SystemExit(error)
     image = image.convert()
     if colorkey is not None:

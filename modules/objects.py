@@ -212,6 +212,30 @@ class StaticObject(PhysicsObject):
         
         super().__init__(animations, starting_animation, *groups, set_colliders=self.set_colliders, static=True, **kwargs)
 
+class Bubble(StaticObject):
+
+    up_right = (1, -1)
+    down_right = (1, 1)
+    up_left = (-1, -1)
+    down_left = (-1, 1)
+
+    seq = [up_right, down_right, down_left, up_left]
+
+    def __init__(self, enemy):
+        super().__init__({"bubble":Animation("bubble")}, "bubble", is_trigger=True)
+
+        self.speed = random.randint(1, 10)
+        self.direction = tuple(self.speed * a for a in random.choice(Bubble.seq))
+
+        self.moveTo(enemy.rect.x, enemy.rect.y)
+
+    def update(self, physWorld=None, *args, **kwargs):
+        super().update(physWorld, *args, **kwargs)
+
+        if self.rect.x + self.direction[0] > physWorld.display_surface.get_width() or self.rect.x + self.direction[0] < 0 or self.rect.y + self.direction[1] > physWorld.display_surface.get_height() or self.rect.y + self.direction[1] < 0:
+            self.direction = tuple(self.speed * a for a in random.choice(Bubble.seq))
+
+        self.moveBy(*self.direction)
 
 class Player(PhysicsObject):
     def __init__(self, animations, starting_animation, *groups, **kwargs):
@@ -246,7 +270,9 @@ class Player(PhysicsObject):
                 elif e.trigger.flipped:
                     e.trigger.flip()
 
-            if e.trigger.current_animation == "spikes" and self.damageCounter == 0:
+            if (e.trigger.current_animation == "spikes" or e.trigger.current_animation == "bubble") and self.damageCounter == 0:
+                if e.trigger.current_animation == "bubble":
+                    physWorld.remove(e.trigger)
                 self.change_animation("hurt")
                 self.health -= 1
                 self.damageCounter = 120
