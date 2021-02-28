@@ -21,9 +21,3 @@ def load_image(name, colorkey=None):
         image.set_colorkey(colorkey, RLEACCEL)
 
     return image, image.get_rect()
-
-
-def keyInput(event, state):
-
-    if event.key == K_a:
-        print("holy fuck! that's the a key!")
